@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management System</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #333; 
+      color: #fff; 
+      scroll-behavior: smooth; 
+    }
+  
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #222; 
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Classy shadow */
+    }
+  
+    h1, h2, h3 {
+      color: #fff; 
+    }
+  
+    form {
+      margin-bottom: 20px;
+    }
+  
+    label {
+      font-weight: bold;
+      color: #fff; 
+    }
+  
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #888; 
+      border-radius: 4px;
+      box-sizing: border-box;
+      background-color: #444; 
+      color: #fff; 
+    }
+  
+    button {
+      padding: 10px 20px;
+      background-color: #007bff; 
+      color: #fff;
+      border: 1px solid #007bff; 
+      border-radius: 20px; 
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    }
+  
+    button:hover {
+      background-color: #0056b3; 
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); 
+    }
+  
+    .category {
+      margin-bottom: 20px;
+    }
+  
+    .book {
+      border: 1px solid #888; 
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #444; 
+    }
+  
+  
+    .shelf {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+  
+    .book h3 {
+      margin-bottom: 5px;
+    }
+  
+    /* Smart View */
+    @media (max-width: 600px) {
+      .container {
+        width: 90%;
+      }
+    }
+  </style>
+  
+</head>
+<body>
+  <h1>Library Management System</h1>
+
+  <form action="/search" method="post">
+    <label for="category">Select Category:</label>
+    <select name="category" id="category">
+      <option value="history">History</option>
+      <option value="chemistry">Chemistry</option>
+      <option value="biology">Biology</option>
+    </select>
+    <button type="submit">Search</button>
+  </form>
+  
+  <h2>Post New Book</h2>
+  <form action="/books" method="post">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required><br>
+    <label for="author">Author:</label>
+    <input type="text" id="author" name="author" required><br>
+    <label for="category">Category:</label>
+    <select name="category" id="category">
+      <option value="history">History</option>
+      <option value="chemistry">Chemistry</option>
+      <option value="biology">Biology</option>
+    </select><br>
+    <button type="submit">Post</button>
+  </form>
+
+  <div class="container">
+    <% const categoryBooks = {}; %>
+    <% books.forEach(book => { %>
+      <% if (!categoryBooks[book.category]) { %>
+        <% categoryBooks[book.category] = []; %>
+      <% } %>
+      <% categoryBooks[book.category].push(book); %>
+    <% }); %>
+    
+    <% for (const category in categoryBooks) { %>
+      <div class="category">
+        <h2> <%= category %></h2>
+        <div class="shelf">
+          <% categoryBooks[category].forEach(book => { %>
+            <div class="book">
+              <h3><%= book.title %> by <%= book.author %></h3>
+              <p>Category: <%= book.category %></p>
+              <button onclick="shareBook('<%= book.title %>', '<%= book.author %>', '<%= book.category %>', '<%= book.folder %>')">Share</button>
+              <button onclick="deleteBook('<%= book._id %>')">Delete</button> 
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <form action="/add-to-folder" method="post">
+    <label for="bookId">Select Book:</label>
+    <select name="bookId" id="bookId">
+      <% books.forEach(book => { %>
+        <option value="<%= book._id %>"><%= book.title %> by <%= book.author %></option>
+      <% }); %>
+    </select>
+    <label for="folderName">Folder Name:</label>
+    <input type="text" id="folderName" name="folderName" required>
+    <button type="submit">Add to Folder</button>
+  </form>
+
+  <h2>Search Books by Folder</h2>
+  <form action="/searchByFolder" method="post">
+    <label for="folder">Folder Name:</label>
+    <input type="text" id="folder" name="folder" required><br>
+    <button type="submit">Search</button>
+  </form>
+
+  <script>
+    function shareBook(title, author, category) {
+      const textToCopy = `Title: ${title}\nAuthor: ${author}\nCategory: ${category}`;
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => alert('Book details copied to clipboard'))
+        .catch(err => console.error('Could not copy text: ', err));
+    }
+    
+    function deleteBook(id) {
+      fetch(`/books/${id}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('Book deleted successfully');
+          location.reload(); 
+        } else {
+          console.error('Failed to delete book');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    }
+  </script>
+</body>
+</html>
