@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 const Book = require('./models/book');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 mongoose.connect('mongodb+srv://koarsk03:glMRbP3FZbbKnOC1@cluster0.oby5ugh.mongodb.net/', {
 
