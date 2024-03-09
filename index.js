@@ -178,6 +178,9 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+
+
 app.get('/', async (req, res) => {
     try {
       const books = await Book.find();
@@ -189,43 +192,10 @@ app.get('/', async (req, res) => {
   });
 
 
-// app.post('/search', async (req, res) => {
-//   const { category } = req.body;
-//   try {
-//     const books = await Book.find({ category });
-//     res.render('index', { books });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send('Internal Server Error');
-//   }
-// });
-// app.post('/search', async (req, res) => {
-//   const { category } = req.body;
-//   try {
-
-//     const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:${category}`);
-//     const data = await response.json();
-    
-
-//     const books = data.items.map(item => ({
-//       title: item.volumeInfo.title,
-//       author: item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown Author',
-//       category: category,
-
-//     }));
-
-//     await Book.insertMany(books);
-
-//     res.render('index', { books });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send('Internal Server Error');
-//   }
-// });
 app.post('/search', async (req, res) => {
   const { title, author, category } = req.body;
   try {
-    // Construct the query based on the provided criteria
+  
     const query = {};
     if (title) query.title = { $regex: title, $options: 'i' }; // Case-insensitive search for title
     if (author) query.author = { $regex: author, $options: 'i' }; // Case-insensitive search for author
@@ -312,7 +282,7 @@ app.post('/searchByFolder', async (req, res) => {
 app.get('/autocomplete', async (req, res) => {
   const { term } = req.query;
   try {
-    // Fetch book titles from the database that match the provided term
+
     const titles = await Book.find({ title: { $regex: term, $options: 'i' } }, 'title');
     const suggestions = titles.map(book => book.title);
     res.json(suggestions);
