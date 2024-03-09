@@ -12,10 +12,13 @@
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #333; 
-  color: #fff; 
+  background-image: 
+  radial-gradient(at 47% 33%, hsl(225, 100%, 8%) 0, transparent 59%), 
+  radial-gradient(at 82% 65%, hsl(252, 4%, 25%) 0, transparent 55%); 
+  color: #d0f4de; 
+  background-color: #003049;
   scroll-behavior: smooth; 
-  background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20230526/pngtree-an-old-bookcase-in-a-library-image_2642908.jpg'); 
+
   background-size: cover; 
 }
 .book {
@@ -62,6 +65,89 @@
     .book img {
       transition: opacity 0.3s ease;
     }
+
+#search {
+  background-image: radial-gradient(at 47% 33%, hsl(240, 51%, 57%) 0, transparent 59%), 
+                    radial-gradient(at 82% 65%, hsl(240, 47%, 18%) 0, transparent 55%);
+  background-color: #030c11; 
+}
+
+
+#search button {
+  background-color: #0077b6; 
+  background-image: radial-gradient(at 47% 33%, hsl(240, 93%, 16%) 0, transparent 51%), 
+                    radial-gradient(at 82% 65%, hsl(240, 100%, 9%) 0, transparent 55%);
+  color: #fff;
+  border: none;
+  border-radius: 20px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}
+
+#search button:hover {
+  background-color: #03045e; 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); 
+}
+
+#post-book {
+  background-image: radial-gradient(at 47% 33%, hsl(240, 56%, 41%) 0, transparent 59%), 
+                    radial-gradient(at 82% 65%, hsl(240, 47%, 18%) 0, transparent 55%);
+  background-color: #030c11; 
+}
+
+
+#post-book form {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+
+#post-book form label {
+  color: #fff;
+  display: block;
+  margin-bottom: 10px;
+  margin-top: 20px; 
+}
+
+#post-book form input[type="text"],
+#post-book form select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #e5e5e5; 
+  color: #14213d;
+}
+
+
+#post-book form button {
+  padding: 10px 20px;
+  background-color: #0077b6; 
+  background-image: radial-gradient(at 47% 33%, hsl(240, 93%, 16%) 0, transparent 51%), 
+                    radial-gradient(at 82% 65%, hsl(240, 100%, 9%) 0, transparent 55%);
+  color: #fff;
+  border: none;
+  border-radius: 20px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}
+
+
+#post-book form button:hover {
+  background-color: #0056b3; 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); 
+}
+#search-by-folder{
+  background-image: radial-gradient(at 47% 33%, hsl(240, 56%, 41%) 0, transparent 59%), 
+                    radial-gradient(at 82% 65%, hsl(240, 47%, 18%) 0, transparent 55%);
+  background-color: #030c11; 
+}
 
 
     nav {
@@ -223,21 +309,6 @@ nav ul li a:hover::before {
   </nav> 
   
 
-
-  <section id="search">
-    <h2>Search Section</h2>
-    <form action="/search" method="post">
-      <label for="category">Select Category:</label>
-      <select name="category" id="category">
-        <option value="history">History</option>
-        <option value="chemistry">Chemistry</option>
-        <option value="biology">Biology</option>
-      </select>
-      <button type="submit">Search</button>
-    </form>
-  </section>
-
-
   <section id="post-book">
     <h2>Post New Book Section</h2>
     <form action="/books" method="post">
@@ -253,7 +324,21 @@ nav ul li a:hover::before {
       </select><br>
       <button type="submit">Post</button>
     </form>
+    <section id="search">
+      <h2>Search Section</h2>
+      <form action="/search" method="post">
+        <label for="category">Select Category:</label>
+        <select name="category" id="category">
+          <option value="history">History</option>
+          <option value="chemistry">Chemistry</option>
+          <option value="biology">Biology</option>
+        </select>
+        <button type="submit">Search</button>
+      </form>
+    </section>
+  
     <form action="/add-to-folder" method="post">
+      <h2>Select book to add in the folder</h2>
       <label for="bookId">Select Book:</label>
       <select name="bookId" id="bookId">
         <% books.forEach(book => { %>
